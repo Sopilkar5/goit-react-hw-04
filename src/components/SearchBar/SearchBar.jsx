@@ -1,23 +1,42 @@
-import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa'; 
-import styles from './SearchBar.module.css';
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import toast from "react-hot-toast";
+import styles from "./SearchBar.module.css";
 
 const SearchBar = ({ onSubmit }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   const handleChange = (event) => {
     setQuery(event.target.value);
   };
 
+  const isEnglish = (text) => /^[a-zA-Z\s]+$/.test(text);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(query); 
-    setQuery('');
+    if (query.trim() === "") {
+      toast.error("Please enter a search term!");
+      return;
+    }
+    if (!isEnglish(query)) {
+      toast.error("Sorry, but our search engine only speaks English! Try again, mate!");
+      return;
+    }
+    onSubmit(query);
+    setQuery("");
   };
 
   const handleIconClick = () => {
-    onSubmit(query); 
-    setQuery('');
+    if (query.trim() === "") {
+      toast.error("Please enter a search term!");
+      return;
+    }
+    if (!isEnglish(query)) {
+      toast.error("Sorry, but our search engine only speaks English! Try again, mate!");
+      return;
+    }
+    onSubmit(query);
+    setQuery("");
   };
 
   return (
@@ -31,10 +50,7 @@ const SearchBar = ({ onSubmit }) => {
             onChange={handleChange}
             placeholder="Search images and photos"
           />
-          <FaSearch
-            className={styles.searchIcon}
-            onClick={handleIconClick}
-          />
+          <FaSearch className={styles.searchIcon} onClick={handleIconClick} />
         </div>
       </form>
     </header>
