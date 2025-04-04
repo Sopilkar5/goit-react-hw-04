@@ -25,12 +25,19 @@ const App = () => {
       .finally(() => setLoading(false));
   }, [query, page]);
 
+  const handleSearch = (newQuery) => {
+    setQuery(newQuery);
+    setPage(1);
+    setImages([]);
+    setError(false);
+  };
+
   return (
     <>
-      <SearchBar onSubmit={setQuery} />
+      <SearchBar onSubmit={handleSearch} />
       {error && <ErrorMessage />}
       {loading && images.length === 0 && <Loader center />}
-      
+
       <ImageGallery images={images} onImageClick={setModalImage} />
       {loading && images.length > 0 && <Loader />}
 
